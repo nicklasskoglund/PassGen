@@ -45,6 +45,26 @@ def print_menu() -> None:
     print('2) Show saved passwords')
     print('3) Exit')
     
+
+def choose_difficulty() -> str:
+    '''
+    Ask the user to choose a difficulty level for the password.
+    Returns one of: "1", "2", "3".
+    '''
+    print('\nChoose difficulty level:')
+    print('1) Easy      (letters + digits)')
+    print('2) Medium    (letters + digits + some special characters)')
+    print('3) Hard      (letters + digits + many special characters)')
+    
+    while True:
+        choice = input('Difficulty (1-3): ').strip()
+        
+        if choice in ('1', '2', '3'):
+            return choice   # valid choice, return it to the caller
+        
+        # if we reach this line, the input was invalid.
+        print('❌ Invalid difficulty choice, please enter 1, 2 or 3.')
+    
     
 def run_app() -> None:
     '''
