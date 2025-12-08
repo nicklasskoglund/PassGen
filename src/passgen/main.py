@@ -27,6 +27,9 @@ FUNCTION run_app:
             PRINT error message: "Invalid choice, try again"
 '''
 
+from . import config                    # import configuration (min/max/default length, paths, etc.)
+from . import password_generator as pg  # import the password generator module
+
 def print_header() -> None:
     '''
     Print a simple header for the CLI application.
@@ -64,6 +67,72 @@ def choose_difficulty() -> str:
         
         # if we reach this line, the input was invalid.
         print('❌ Invalid difficulty choice, please enter 1, 2 or 3.')
+        
+        
+def ask_password_length() -> int:
+    '''
+    Ask the user for a password length.
+    Validates that the length is an integer and within the allowed range
+    defined in config.MIN_LENGTH and config.MAX_LENGTH.
+    '''
+    # build a helpful prompt that shows min/max and default values.
+    prompt = (
+        f'Enter password length '
+        f'({config.MIN_LENGTH}-{config.MAX_LENGTH}, default {config.DEFAULT_LENGTH}): '
+    )
+    
+    while True:
+        raw = input(prompt).strip()
+        
+        # if the user just press Enter, we can use DEFAULT_LENGTH.
+        if raw == '':
+            return config.DEFAULT_LENGTH
+        
+        try:
+            length = int(raw)   # try to convert the input to an integer
+        except ValueError:
+            print('❌ Invalid number, please enter an integer value.')
+            continue    # go back to the beginning of the loop
+        
+        # now we check if the length is within the allowed range.
+        if length < config.MIN_LENGTH or length > config.MAX_LENGTH:
+            print(
+                f'❌ Length must be between {config.MIN_LENGTH} and {config.MAX_LENGTH}.'
+            )
+            continue
+        
+        return length   # valid length, return it
+    
+    
+def handle_generate_password() -> None:
+    '''
+    Handle the flow for the menu option 1: Generate a new password.
+    - Ask for difficulty
+    - Ask for length
+    - Generate the password
+    - Print the result
+    '''
+    print('\n--- Generate new password ---')
+    
+    # 1) ask the user which difficulty level to use.
+    level = choose_difficulty()
+    
+    # 2) ask the user how long the password should be.
+    length = ask_password_length()
+    
+    # 3) try to generate the password using the password_generator module.
+    try:
+        password = pg.generate_password(length, level)
+    except ValueError as error:
+        # if something goes wrong (e.g. invalid length or level),
+        # we show an error message instead of crashing.
+        print(f'❌ Error while generating password: {error}')
+        return
+    
+    # 4) show the generated password to the user.
+    print('\nYour new password is:')
+    print(password)
+    print()     # print an extra blank line for readability
     
     
 def run_app() -> None:
@@ -78,12 +147,11 @@ def run_app() -> None:
         print_menu()    # shows the menu options
         
         # asks the user to choose an option
-        choice = input('Choose un option (1-3): ').strip()
+        choice = input('Choose an option (1-3): ').strip()
         
         # handle the user´s choice
         if choice == '1':
-            # here we will later call the real password generation logic
-            print('\n[TODO] Generate password is not implemented yet. \n')
+            handle_generate_password()
             
         elif choice == '2':
             # here we will later show saved passwords from the JSON file
