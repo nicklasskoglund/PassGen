@@ -78,3 +78,23 @@ def _save_raw(data: List[Dict[str, Any]]) -> None:
         json.dump(data, f, indent=2, ensure_ascii=False)
 
 
+def add_password(service: str, username: str, password: str) -> None:
+    '''
+    Add a new password to the JSON file.
+    
+    :param service: The name of the service (e.g. "Gmail", "Spotify").
+    :param username: The username or email used for that service.
+    :param password: The generated password.
+    '''
+    data = _load_raw()
+    
+    record: Dict[str, Any] = {
+        'service': service,
+        'username': username,
+        'password': password,
+        # store a timestamp when the password was created
+        'created_at': datetime.now().isoformat(timespec='seconds'),
+    }
+    
+    data.append(record)
+    _save_raw(data)
