@@ -47,3 +47,41 @@ def ask_menu_choice(prompt: str = 'Chooce an option: ') -> str:
     '''
     choice = input(prompt).strip()
     return choice
+
+
+def ask_int(
+    prompt: str,
+    min_value: int,
+    max_value: int,
+    default: Optional[int] = None,
+) -> int:
+    '''
+    Ask the user for an integer within a given range.
+    Optionally, a default value can be provided.
+    If the user presses Enter with no input and default is not None,
+    the default value is returned.
+    
+    :param prompt: Text to show the user.
+    :param min_value: Minimum allowed integer value.
+    :param max_value: Maximum allowed integer value.
+    :param default: Default value if the user inputs nothing (optional).
+    :return: A valid integer within the range [min_value, max_value].
+    '''
+    while True:
+        raw = input(prompt).strip()
+        
+        # if the user just presses Enter and a default is provided, use it.
+        if raw == '' and default is not None:
+            return default
+        
+        try:
+            value = int(raw)
+        except ValueError:
+            print('❌ Invalid number, please enter an integer.')
+            continue
+        
+        if value < min_value or value > max_value:
+            print(f'❌ Value must be between {min_value} and {max_value}.')
+            continue
+        
+        return value
