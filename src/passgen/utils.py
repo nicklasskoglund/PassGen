@@ -85,3 +85,19 @@ def ask_int(
             continue
         
         return value
+    
+    
+def ask_non_empty(prompt: str) -> str:
+    '''
+    Ask the user for a non-empty string.
+    The function will keep asking until the user writes something.
+    
+    :param prompt: Text to show the user.
+    :return: A non-empty string.
+    '''
+    while True:
+        value = input(prompt).strip()
+        if value:
+            return value
+        
+        print('❌ This field cannot be empty. Please enter a value.')
