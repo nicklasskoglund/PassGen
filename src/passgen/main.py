@@ -4,6 +4,7 @@
 IMPORT config
 IMPORT password_generator as pg
 IMPORT storage
+IMPORT utils
 
 FUNCTION choose_difficulty:
     PRINT difficulty menu (1, 2, 3)
