@@ -3,6 +3,7 @@
 '''
 IMPORT config
 IMPORT password_generator as pg
+IMPORT storage
 
 FUNCTION choose_difficulty:
     PRINT difficulty menu (1, 2, 3)
@@ -38,16 +39,17 @@ IN run_app:
     IF choice == "1":
         CALL handle_generate_password()
     ELSE IF choice == "2":
-            PRINT "TODO: show saved passwords (not implemented yet)"
+        CALL handle_show_saved_passwords()
     ELSE IF choice == "3":
-            PRINT "Goodbye" and BREAK the loop
+        PRINT "Goodbye" and BREAK the loop
     ELSE:
-            PRINT error message: "Invalid choice, try again"
+        PRINT error message: "Invalid choice, try again"
 '''
 
 from . import config                    # import configuration (min/max/default length, paths, etc.)
 from . import password_generator as pg  # import the password generator module
 from . import storage                   # for saving/loading passwords
+from . import utils                     # input helper functions
 
 def print_header() -> None:
     '''
@@ -90,37 +92,22 @@ def choose_difficulty() -> str:
         
 def ask_password_length() -> int:
     '''
-    Ask the user for a password length.
-    Validates that the length is an integer and within the allowed range
-    defined in config.MIN_LENGTH and config.MAX_LENGTH.
+    Ask the user for a password length using the utils.ask_int helper.
+    Uses the default length from config if the user just presses Enter.
     '''
-    # build a helpful prompt that shows min/max and default values.
     prompt = (
         f'Enter password length '
         f'({config.MIN_LENGTH}-{config.MAX_LENGTH}, default {config.DEFAULT_LENGTH}): '
     )
     
-    while True:
-        raw = input(prompt).strip()
-        
-        # if the user just press Enter, we can use DEFAULT_LENGTH.
-        if raw == '':
-            return config.DEFAULT_LENGTH
-        
-        try:
-            length = int(raw)   # try to convert the input to an integer
-        except ValueError:
-            print('❌ Invalid number, please enter an integer value.')
-            continue    # go back to the beginning of the loop
-        
-        # now we check if the length is within the allowed range.
-        if length < config.MIN_LENGTH or length > config.MAX_LENGTH:
-            print(
-                f'❌ Length must be between {config.MIN_LENGTH} and {config.MAX_LENGTH}.'
-            )
-            continue
-        
-        return length   # valid length, return it
+    # we delegate the actual validation and input parsing to utils.ask_int.
+    length = utils.ask_int(
+        prompt=prompt,
+        min_value=config.MIN_LENGTH,
+        max_value=config.MAX_LENGTH,
+        default=config.DEFAULT_LENGTH,
+    )
+    return length
     
     
 def handle_generate_password() -> None:
