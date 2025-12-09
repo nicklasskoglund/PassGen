@@ -220,11 +220,9 @@ def run_app() -> None:
             handle_generate_password()
             
         elif choice == '2':
-            # here we will later show saved passwords from the JSON file
-            print('\n[TODO] Show save passwords is not implemeneted yet. \n')
+            handle_show_saved_passwords()
             
         elif choice == '3':
-            # exit the loop and end the application
             print('\nGoodbye! 👋')
             break
         
