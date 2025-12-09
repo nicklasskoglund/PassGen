@@ -200,7 +200,7 @@ def run_app() -> None:
         print_menu()    # shows the menu options
         
         # asks the user to choose an option
-        choice = input('Choose an option (1-3): ').strip()
+        choice = utils.ask_menu_choice('Chooce an option (1-3): ')
         
         # handle the user´s choice
         if choice == '1':
