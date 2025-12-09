@@ -145,9 +145,9 @@ def handle_generate_password() -> None:
     save_choice = input('Do you want to save this password? (y/n): ').strip().lower()
     
     if save_choice == 'y':
-        # ask for additional information needed for storage
-        service = input('Service name (e.g. Gmail, Spotify): ').strip()
-        username = input('Username / email for this service: ').strip()
+        # ask for additional information needed for storage using utils.ask_non_empty.
+        service = utils.ask_non_empty('Service name (e.g. Gmail, Spotify): ')
+        username = utils.ask_non_empty('Username / email for this service: ')
         
         # call the storage modul to save the new record
         storage.add_password(service, username, password)
