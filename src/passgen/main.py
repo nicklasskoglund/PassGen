@@ -130,6 +130,7 @@ def handle_generate_password() -> None:
     - Ask for length
     - Generate the password
     - Print the result
+    - Optionally save the password to the JSON file
     '''
     print('\n--- Generate new password ---')
     
@@ -152,6 +153,22 @@ def handle_generate_password() -> None:
     print('\nYour new password is:')
     print(password)
     print()     # print an extra blank line for readability
+    
+    # 5) ask if the user wants to save the password.
+    save_choice = input('Do you want to save this password? (y/n): ').strip().lower()
+    
+    if save_choice == 'y':
+        # ask for additional information needed for storage
+        service = input('Service name (e.g. Gmail, Spotify): ').strip()
+        username = input('Username / email for this service: ').strip()
+        
+        # call the storage modul to save the new record
+        storage.add_password(service, username, password)
+        print('✅ Password saved.')
+        print()
+    else:
+        print('Password was not saved.')
+        print()
 
 
 def handle_show_saved_passwords() -> None:
