@@ -1,29 +1,47 @@
 # src/passgen/main.py
 
 '''
-FUNCTION print_header:
-    PRINT a nice title and separator lines
+IMPORT config
+IMPORT password_generator as pg
 
-FUNCTION print_menu:
-    PRINT the available menu options
-        1) Generate new password
-        2) Show saved passwords
-        3) Exit
-
-FUNCTION run_app:
-    CALL print_header
-
-    LOOP forever:
-        CALL print_menu
-        READ user input as choice (string)
-        
-        IF choice == "1":
-            PRINT "TODO: generate password (not implemented yet)"
-        ELSE IF choice == "2":
-            PRINT "TODO: show saved passwords (not implemented yet)"
-        ELSE IF choice == "3":
-            PRINT "Goodbye" and BREAK the loop
+FUNCTION choose_difficulty:
+    PRINT difficulty menu (1, 2, 3)
+    LOOP:
+        READ user input as choice
+        IF choice is "1" or "2" or "3":
+            RETURN choice
         ELSE:
+            PRINT "invalid choice" and repeat
+
+FUNCTION ask_password_length:
+    LOOP:
+        ASK user to input desired length (show min, max and default)
+        TRY to convert input to integer
+            IF conversion fails:
+                PRINT "invalid number" and continue
+        IF length is smaller than MIN_LENGTH or larger than MAX_LENGTH:
+            PRINT "must be between MIN and MAX" and continue
+        RETURN length
+
+FUNCTION handle_generate_password:
+    PRINT "Generate password"
+    CALL choose_difficulty -> level
+    CALL ask_password_length -> length
+
+    TRY:
+        CALL pg.generate_password(length, level) -> password
+        PRINT the resulting password
+    EXCEPT ValueError as error:
+        PRINT error message
+
+IN run_app:
+    IF choice == "1":
+        CALL handle_generate_password()
+    ELSE IF choice == "2":
+            PRINT "TODO: show saved passwords (not implemented yet)"
+    ELSE IF choice == "3":
+            PRINT "Goodbye" and BREAK the loop
+    ELSE:
             PRINT error message: "Invalid choice, try again"
 '''
 
