@@ -47,6 +47,7 @@ IN run_app:
 
 from . import config                    # import configuration (min/max/default length, paths, etc.)
 from . import password_generator as pg  # import the password generator module
+from . import storage                   # for saving/loading passwords
 
 def print_header() -> None:
     '''
@@ -151,6 +152,36 @@ def handle_generate_password() -> None:
     print('\nYour new password is:')
     print(password)
     print()     # print an extra blank line for readability
+
+
+def handle_show_saved_passwords() -> None:
+    '''
+    Handle the flow for menu option 2: show all saved passwords.
+    '''
+    print('\n--- Saved passwords ---')
+    
+    records = storage.list_passwords()
+    
+    if not records:
+        # if the list is empty, there are no saved passwords yet.
+        print('No passwords have been saved yet.')
+        print()
+        return
+    
+    # loop over saved password records and print them nicely.
+    for index, record in enumerate(records, start=1):
+        service = record.get('service', '-')
+        username = record.get('username', '-')
+        password = record.get('password', '-')
+        created_at = record.get('created_at', '-')
+        
+        print(f'{index}. Service: {service}')
+        print(f'   Username: {username}')
+        print(f'   Password: {password}')
+        print(f'   Created:  {created_at}')
+        print('-' * 40)
+        
+    print()     # extra blank line at the end
     
     
 def run_app() -> None:
