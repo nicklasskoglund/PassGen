@@ -98,3 +98,12 @@ def add_password(service: str, username: str, password: str) -> None:
     
     data.append(record)
     _save_raw(data)
+    
+    
+def list_passwords() -> List[Dict[str, Any]]:
+    '''
+    Return the list of all saved password records.
+    
+    :return: List of dictionaries with key: service, username, password, created_at.
+    '''
+    return _load_raw()
