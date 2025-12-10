@@ -218,3 +218,6 @@ __marimo__/
 
 # Ignore generated password storage file
 src/passgen/data/passwords.json
+
+# Ignore generated report file
+src/passgen/reports/
