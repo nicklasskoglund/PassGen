@@ -10,30 +10,48 @@
 
 
 <!-- PROJECT LOGO -->
-'''
+```
 __________                        ________               
 \______   \_____    ______ ______/  _____/  ____   ____  
  |     ___/\__  \  /  ___//  ___/   \  ____/ __ \ /    \ 
  |    |     / __ \_\___ \ \___ \\    \_\  \  ___/|   |  \
  |____|    (____  /____  >____  >\______  /\___  >___|  /
                 \/     \/     \/        \/     \/     \/ 
-'''
+```
+
+
+A simple **text-based password generator** built in Python.  
+Generate secure passwords with different difficulty levels, customize length, and optionally store them in a local **JSON file** for later reference.
+
+---
 
 
 <!-- TABLE OF CONTENTS -->
-## Table of Contents
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#features">Features</a>
+      <a href="#technical-overview">Technical Overview</a></li>
+      <a href="#libraries">Libraries</a>
+    </li>
+    <li>
+        <li><a href="#getting-started--installation">Getting Started – Installation</a></li>
+      <ul>
+        <li><a href="#windows-powershell">Windows (PowerShell)</a></li>
+        <li><a href="#macos--linux">macOS & Linux</a></li>
+        <li><a href="#quick-start-without-virtual-environment">Quick start without virtual environment</a></li>
+      </ul>
+    </li>
+    <li><a href="#running-the-app">Running the App</a></li>
+    <li><a href="#project-structure">Project Structure</a></li>
+    <li><a href="#example-terminal">Example (terminal)</a></li>
+    <li><a href="#tests">Tests</a></li>
+    <li><a href="#author">Author</a></li>
+    <li><a href="#future-improvements">Future Improvements</a></li>
+    <li><a href="#license--usage">License / Usage</a></li>
+  </ol>
+</details>
 
-* [Features](#features)
-* [Technical Overview](#technical-overview)
-* [Libraries](#libraries)
-* [Getting Started – Installation](#getting-started--installation)
-  * [Windows (PowerShell)](#windows-powershell)
-  * [macOS & Linux](#macos--linux)
-  * [Quick start without virtual environment](#quick-start-without-virtual-environment)
-* [Running the App](#running-the-app)
-* [Project Structure](#project-structure)
-* [Example (terminal)](#example-terminal)
-* [Tests](#tests)
-* [Author](#author)
-* [Future Improvements](#future-improvements)
-* [License / Usage](#license--usage)
+
+---
