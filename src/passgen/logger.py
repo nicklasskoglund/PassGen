@@ -44,3 +44,13 @@ def log_password_generated(length: int, difficulty: str) -> None:
     log_event(message, level='INFO')
     
     
+def log_password_saved(service: str, username: str) -> None:
+    '''
+    Helper function to log that a password was saved to storage.
+    
+    Again, we do NOT log the actual password for security reasons.
+    '''
+    message = f'Saved password service={service!r} username={username!r}'
+    log_event(message, level='INFO')
+    
+    
