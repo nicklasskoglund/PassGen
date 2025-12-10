@@ -34,3 +34,13 @@ def log_event(message: str, level: str = 'INFO') -> None:
         f.write(line)
         
         
+def log_password_generated(length: int, difficulty: str) -> None:
+    '''
+    Helper function to log that a password was generated.
+    
+    We intentionally DO NOT log the actual password, only metadata.
+    '''
+    message = f'Generated password length={length} difficulty={difficulty!r}'
+    log_event(message, level='INFO')
+    
+    
