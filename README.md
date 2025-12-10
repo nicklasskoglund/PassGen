@@ -30,11 +30,9 @@ Generate secure passwords with different difficulty levels, customize length, an
 <details>
   <summary>Table of Contents</summary>
   <ol>
-    <li>
-      <a href="#features">Features</a>
-      <a href="#technical-overview">Technical Overview</a></li>
-      <a href="#libraries">Libraries</a>
-    </li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#technical-overview">Technical Overview</a></li>
+    <li><a href="#libraries">Libraries</a></li>
     <li>
         <li><a href="#getting-started--installation">Getting Started – Installation</a></li>
       <ul>
