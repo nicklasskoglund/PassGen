@@ -47,18 +47,31 @@ IN run_app:
         PRINT error message: "Invalid choice, try again"
 '''
 
+from rich.console import Console        # for colored / styled output
+from rich.panel import Panel            # for a nice box around the header
+
 from . import config                    # import configuration (min/max/default length, paths, etc.)
 from . import password_generator as pg  # import the password generator module
 from . import storage                   # for saving/loading passwords
 from . import utils                     # input helper functions
 
+# create a global Console instance that we can use throughout this module.
+console = Console()
+
 def print_header() -> None:
     '''
-    Print a simple header for the CLI application.
+    Print a colorful header for the CLI application using Rich.
     '''
-    print('=' * 40)     # print a line of 40 "=" characters
-    print('   PASSWORD GENERATOR (CLI)   ')     # title of the app
-    print('=' * 40)     # print another line of 40 '='
+    title_text = '[bold magenta]PassGen[/bold magenta]\n[cyan]Password Generator CLI[/cyan]'
+    
+    # panel creates a nice box around the text
+    panel = Panel(
+        title_text,
+        border_style='magenta',
+        expand=False,
+    )
+    
+    console.print(panel)
     
     
 def print_menu() -> None:
