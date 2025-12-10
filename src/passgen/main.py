@@ -191,7 +191,7 @@ def handle_show_saved_passwords() -> None:
     records = storage.list_passwords()
     
     # log how many records we are about to show.
-    logger.log_passwords_listed(count=len(record))
+    logger.log_passwords_listed(count=len(records))
     
     if not records:
         # if the list is empty, there are no saved passwords yet.
