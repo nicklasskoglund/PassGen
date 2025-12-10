@@ -237,9 +237,9 @@ def run_app() -> None:
             handle_show_saved_passwords()
             
         elif choice == '3':
-            print('\nGoodbye! 👋')
+            console.print('\nGoodbye! 👋', style='bold magenta')
             break
         
         else:
             # basic error handling for invalid menu choices
-            print('\n❌ Invalid menu choice, please try again.\n')
+            console.print('\n❌ Invalid menu choice, please try again.\n', style='red')
