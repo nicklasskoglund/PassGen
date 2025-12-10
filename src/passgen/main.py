@@ -54,6 +54,7 @@ from . import config                    # import configuration (min/max/default 
 from . import password_generator as pg  # import the password generator module
 from . import storage                   # for saving/loading passwords
 from . import utils                     # input helper functions
+from . import logger                    # logging module
 
 # create a global Console instance that we can use throughout this module.
 console = Console()
@@ -148,10 +149,15 @@ def handle_generate_password() -> None:
         # if something goes wrong (e.g. invalid length or level),
         # we show an error message instead of crashing.
         console.print(f'❌ [red]Error while generating password:[/red] {error}')
+        # log the error
+        logger.log_event(f'Error generating password: {error}", level="ERROR')
         return
     
+    # log that a password was generated (without storing the actual password).
+    logger.log_password_generated(length=length, difficulty=level)
+    
     # 4) show the generated password to the user.
-    print('\nYour new password is:')
+    console.print('\nYour new password is:', style='bold green')
     print(password)
     print()     # print an extra blank line for readability
     
@@ -165,10 +171,14 @@ def handle_generate_password() -> None:
         
         # call the storage modul to save the new record
         storage.add_password(service, username, password)
+        
+        # log that we saved the password (without the password itself).
+        logger.log_password_saved(service=service, username=username)
+        
         console.print('✅ [green]Password saved.[/green]')
         print()
     else:
-        print('Password was not saved.')
+        console.print('Password was not saved.', style='yellow')
         print()
 
 
@@ -176,9 +186,12 @@ def handle_show_saved_passwords() -> None:
     '''
     Handle the flow for menu option 2: show all saved passwords.
     '''
-    print('\n--- Saved passwords ---')
+    console.print('\n--- Saved passwords ---', style='bold cyan')
     
     records = storage.list_passwords()
+    
+    # log how many records we are about to show.
+    logger.log_passwords_listed(count=len(record))
     
     if not records:
         # if the list is empty, there are no saved passwords yet.
