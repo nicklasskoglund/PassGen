@@ -19,28 +19,28 @@ __________                        ________
                 \/     \/     \/        \/     \/     \/ 
 ```
 
+## About The Project
 
 A simple **text-based password generator** built in Python.  
-Generate secure passwords with different difficulty levels, customize length, and optionally store them in a local **JSON file** for later reference.
+Generate secure passwords with different difficulty levels, customize length, and optionally store them in a local **JSON file** for later reference. This repository was created as a school assignment / learning project.
 
 ---
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
   <ol>
-    <li><a href="#features">Features</a></li>
+    <li><a href="#about-the-project">About The Project</a></li>
     <li><a href="#technical-overview">Technical Overview</a></li>
     <li><a href="#libraries">Libraries</a></li>
-    <li>
-        <li><a href="#getting-started--installation">Getting Started – Installation</a></li>
+    <li><a href="#getting-started--installation">Getting Started – Installation</a></li>
       <ul>
         <li><a href="#windows-powershell">Windows (PowerShell)</a></li>
         <li><a href="#macos--linux">macOS & Linux</a></li>
         <li><a href="#quick-start-without-virtual-environment">Quick start without virtual environment</a></li>
       </ul>
-    </li>
     <li><a href="#running-the-app">Running the App</a></li>
     <li><a href="#project-structure">Project Structure</a></li>
     <li><a href="#example-terminal">Example (terminal)</a></li>
