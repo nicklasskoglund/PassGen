@@ -54,3 +54,12 @@ def log_password_saved(service: str, username: str) -> None:
     log_event(message, level='INFO')
     
     
+def log_passwords_listed(count: int) -> None:
+    '''
+    Helper function to log that a saved password where listed.
+    
+    Args:
+        count: Number of password records that were displayed.
+    '''
+    message = f'Listed saved passwords count={count}'
+    log_event(message, level='INFO')
