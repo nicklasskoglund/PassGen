@@ -1,12 +1,5 @@
 # 🔐 PassGen – Password Generator CLI
 
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![Unlicense License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.11%2B-blue?logo=python&logoColor=white" alt="Python version">
@@ -17,7 +10,6 @@
 
 
 <!-- PROJECT LOGO -->
-<p align="center">
 '''
 __________                        ________               
 \______   \_____    ______ ______/  _____/  ____   ____  
@@ -26,7 +18,6 @@ __________                        ________
  |____|    (____  /____  >____  >\______  /\___  >___|  /
                 \/     \/     \/        \/     \/     \/ 
 '''
-</p>
 
 
 <!-- TABLE OF CONTENTS -->
