@@ -78,7 +78,7 @@ def print_menu() -> None:
     '''
     Print the main menu options for the user using Rich for nicer styling.
     '''
-    console.print('\n[bold underline]Menu[/bold underline]", style="cyan')
+    console.print('\n[bold underline]Menu[/bold underline]', style='cyan')
     console.print('[green]1)[/green] Generate new password')
     console.print('[green]2)[/green] Show saved passwords')
     console.print('[green]3)[/green] Exit')
@@ -89,10 +89,10 @@ def choose_difficulty() -> str:
     Ask the user to choose a difficulty level for the password.
     Returns one of: "1", "2", "3".
     '''
-    print('\nChoose difficulty level:')
-    print('1) Easy      (letters + digits)')
-    print('2) Medium    (letters + digits + some special characters)')
-    print('3) Hard      (letters + digits + many special characters)')
+    console.print('\n[bold underline]Choose difficulty level:[/bold underline]', style='cyan')
+    console.print('[green]1)[/green] Easy      (letters + digits)')
+    console.print('[green]2)[/green] Medium    (letters + digits + some special characters)')
+    console.print('[green]3)[/green] Hard      (letters + digits + many special characters)')
     
     while True:
         choice = input('Difficulty (1-3): ').strip()
@@ -101,7 +101,7 @@ def choose_difficulty() -> str:
             return choice   # valid choice, return it to the caller
         
         # if we reach this line, the input was invalid.
-        print('❌ Invalid difficulty choice, please enter 1, 2 or 3.')
+        console.print('❌ [red]Invalid difficulty choice, please enter 1, 2 or 3.[/red]')
         
         
 def ask_password_length() -> int:
@@ -133,7 +133,7 @@ def handle_generate_password() -> None:
     - Print the result
     - Optionally save the password to the JSON file
     '''
-    print('\n--- Generate new password ---')
+    console.print('\n--- Generate new password ---', style='bold cyan')
     
     # 1) ask the user which difficulty level to use.
     level = choose_difficulty()
@@ -147,7 +147,7 @@ def handle_generate_password() -> None:
     except ValueError as error:
         # if something goes wrong (e.g. invalid length or level),
         # we show an error message instead of crashing.
-        print(f'❌ Error while generating password: {error}')
+        console.print(f'❌ [red]Error while generating password:[/red] {error}')
         return
     
     # 4) show the generated password to the user.
@@ -165,7 +165,7 @@ def handle_generate_password() -> None:
         
         # call the storage modul to save the new record
         storage.add_password(service, username, password)
-        print('✅ Password saved.')
+        console.print('✅ [green]Password saved.[/green]')
         print()
     else:
         print('Password was not saved.')
