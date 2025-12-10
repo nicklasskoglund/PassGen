@@ -76,12 +76,12 @@ def print_header() -> None:
     
 def print_menu() -> None:
     '''
-    Print the main menu options for the user.
+    Print the main menu options for the user using Rich for nicer styling.
     '''
-    print('\nMenu:')
-    print('1) Generate new password')
-    print('2) Show saved passwords')
-    print('3) Exit')
+    console.print('\n[bold underline]Menu[/bold underline]", style="cyan')
+    console.print('[green]1)[/green] Generate new password')
+    console.print('[green]2)[/green] Show saved passwords')
+    console.print('[green]3)[/green] Exit')
     
 
 def choose_difficulty() -> str:
