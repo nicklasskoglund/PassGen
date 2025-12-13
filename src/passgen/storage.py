@@ -34,34 +34,28 @@ FUNCTION list_passwords():
 '''
 
 
-import json                         # used to read/write JSON files
 from datetime import datetime       # used to store a timestamp for each password
 from typing import List, Dict, Any  # type hints for better readability
 
 from .config import PASSWORD_FILE   # import the path to our JSON file
+from .io.module_io import read_json_file, write_json_file   # import read/writ JSON
 
 
 def _load_raw() -> List[Dict[str, Any]]:
     '''
     Load the raw list of password records from the JSON file.
     
-    :return: A list of dictioneries, each representing one saved password.
+    Uses the generic read_json_file() helper from the io.module_io module.
     '''
-    # if the file does not exist yet, we simply return an empty list
-    if not PASSWORD_FILE.exists():
-        return[]
+    data = read_json_file(PASSWORD_FILE)
     
-    try:
-        with PASSWORD_FILE.open('r', encoding='utf-8') as f:
-            data = json.load(f)
-    except json.JSONDecodeError:
-        # if the file is corrupted or not valid JSON,
-        # we return an empty list instead of crashing
-        return[]
+    # if the file was missing or invalid, we treat it as an empty list.
+    if data is None:
+        return []
     
-    # we expect the data to be a list. If not, we fall back to empty list
+    # we expect the data to be a list of dictionaries.
     if not isinstance(data, list):
-        return[]
+        return []
     
     return data
 
