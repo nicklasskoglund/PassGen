@@ -1,9 +1,9 @@
 # src/passgen/logger.py
 
 from datetime import datetime
-from typing import Optional
 
 from .config import LOG_FILE
+from .io.module_io import append_text_line
 
 
 def _current_timestamp() -> str:
@@ -21,17 +21,11 @@ def log_event(message: str, level: str = 'INFO') -> None:
     
     The log format is:
         YYYY-MM-DD HH:MM:SS [LEVEL] message
-        
-    Args:
-        message: Text describing what happened.
-        level: Log level (e.g. "INFO", "WARNING", "ERROR").
     '''
     timestamp = _current_timestamp()
     line = f'{timestamp} [{level}] {message}\n'
-    
-    # open the log file in append mode ("a") so we don´t overwrite existing logs.
-    with LOG_FILE.open('a', encoding='utf-8') as f:
-        f.write(line)
+    # delegate the actual file writing to the I/O helper.
+    append_text_line(LOG_FILE, line)
         
         
 def log_password_generated(length: int, difficulty: str) -> None:
