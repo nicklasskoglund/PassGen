@@ -55,3 +55,21 @@ def read_json_file(path: Path) -> Optional[Any]:
         return None
     
     
+def write_json_file(path: Path, data: Any) -> None:
+    '''
+    Write Python data as JSON to a file.
+    
+    - Creates the parant directory if needed.
+    - Overwrites the file if it already exists.
+    
+    Args:
+        path: Path to the JSON file.
+        data: Any JSON-serializable Python object.
+    '''
+    # ensure the parent directory exists.
+    path.parent.mkdir(parents=True, exist_ok=True)
+    
+    with path.open('w', encoding='utf-8') as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+        
+        
