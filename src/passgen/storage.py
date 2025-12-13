@@ -64,12 +64,9 @@ def _save_raw(data: List[Dict[str, Any]]) -> None:
     '''
     Save the given list of password records back to the JSON file.
     
-    :param data: List of password dictionaries to write to the file.
+    Delegates JSON writing to the io.module_io helper.
     '''
-    with PASSWORD_FILE.open('w', encoding='utf-8') as f:
-        # indent=2 makes the JSON human-readable
-        # ensure_ascii=False allowes Swedish characters etc.
-        json.dump(data, f, indent=2, ensure_ascii=False)
+    write_json_file(PASSWORD_FILE, data)
 
 
 def add_password(service: str, username: str, password: str) -> None:
