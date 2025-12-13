@@ -73,3 +73,21 @@ def write_json_file(path: Path, data: Any) -> None:
         json.dump(data, f, indent=2, ensure_ascii=False)
         
         
+def append_text_line(path: Path, line: str) -> None:
+    '''
+    Append a single line of text to a file.
+    
+    - Creates the parent directory if needed.
+    - Adds a new line at the end of the line automatically.
+    
+    Args:
+        path: Path to the text file.
+        line: Line of text to append (without newline).
+    '''
+    path.parent.mkdir(parents=True, exist_ok=True)
+    
+    with path.open('a', encoding='utf-8') as f:
+        f.write(line)
+        # ensure there is exactly one newline at the end.
+        if not line.endswith('\n'):
+            f.write('\n')
