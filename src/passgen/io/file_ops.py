@@ -96,3 +96,31 @@ def reset_password_file() -> None:
     write_json_file(PASSWORD_FILE, [])
     
     
+def backup_log_file() -> Optional[Path]:
+    '''
+    Create a backup of the main log file (passgen_log.txt), if it exists.
+    
+    - Reads the entire log file as text.
+    - Writes it to a timestamped backup file in REPORTS_DIR / 'backups'.'
+    
+    Returns:
+        Path to the created backup file, or None if the log file does not exists.
+    '''
+    if not LOG_FILE.exists():
+        # no log file to back up.
+        return None
+    
+    backup_dir: Path = REPORTS_DIR / 'backups'
+    backup_dir.mkdir(parents=True, exist_ok=True)
+    
+    timestamp = generate_timestamp()
+    backup_filename = f'passgen_log_{timestamp}.txt'
+    backup_path = backup_dir / backup_filename
+    
+    # read all text from the original log file
+    text = LOG_FILE.read_text(encoding='utf-8')
+    
+    # write text to the backup file
+    backup_path.write_text(text, encoding='utf-8')
+    
+    return backup_path
