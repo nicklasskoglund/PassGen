@@ -215,3 +215,13 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Ignore generated password storage file
+src/passgen/data/passwords.json
+
+# Ignore generated report file
+src/passgen/reports/
+
+# Backups created by file_ops
+src/passgen/data/backups/
+src/passgen/reports/backups/

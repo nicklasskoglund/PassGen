@@ -1,0 +1,27 @@
+[build-system]
+# We use setuptools as the build backend
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "passgen"
+version = "0.1.0"
+description = "A simple CLI password generator with JSON storage and logging."
+readme = "README.md"
+requires-python = ">=3.11"
+
+# Project dependencies (external libraries)
+dependencies = [
+  "rich>=13.0.0",
+]
+
+# This makes `passgen` available as a command in the active environment.
+[project.scripts]
+passgen = "passgen.main:run_app"
+
+[tool.setuptools]
+# We are using a src/ layout:
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
