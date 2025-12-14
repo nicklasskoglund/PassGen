@@ -44,3 +44,13 @@ from ..config import PASSWORD_FILE, REPORTS_DIR, LOG_FILE
 from .module_io import read_json_file, write_json_file
 
 
+def generate_timestamp(format_str: str = '%Y%m%d_%H%M%S') -> str:
+    '''
+    Generate a timestamp string for filenames.
+    
+    Ex:
+        20251210_214530
+    '''
+    return datetime.now().strftime(format_str)
+
+
