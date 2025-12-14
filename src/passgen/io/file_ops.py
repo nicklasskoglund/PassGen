@@ -87,3 +87,12 @@ def backup_password_file() -> Path:
     return backup_path
 
 
+def reset_password_file() -> None:
+    '''
+    Reset the password storage file to an empty list.
+    
+    This is useful for testing or if you want to clear all stored passwords.
+    '''
+    write_json_file(PASSWORD_FILE, [])
+    
+    
