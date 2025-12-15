@@ -1,51 +1,16 @@
 # src/passgen/main.py
 
-'''
-IMPORT config
-IMPORT password_generator as pg
-IMPORT storage
-IMPORT utils
+"""
+Main entry point for the PassGen CLI application.
 
-FUNCTION choose_difficulty:
-    PRINT difficulty menu (1, 2, 3)
-    LOOP:
-        READ user input as choice
-        IF choice is "1" or "2" or "3":
-            RETURN choice
-        ELSE:
-            PRINT "invalid choice" and repeat
+Demonstrates:
+- Composing functionality from multiple modules (config, storage, security, I/O, logging)
+- Creating a main application loop with a menu-driven flow
+- Clean separation between CLI/UI code and core logic modules
+- Using the Rich library for colored terminal output
+- Integrating logging and JSON storage in a user-facing application
+"""
 
-FUNCTION ask_password_length:
-    LOOP:
-        ASK user to input desired length (show min, max and default)
-        TRY to convert input to integer
-            IF conversion fails:
-                PRINT "invalid number" and continue
-        IF length is smaller than MIN_LENGTH or larger than MAX_LENGTH:
-            PRINT "must be between MIN and MAX" and continue
-        RETURN length
-
-FUNCTION handle_generate_password:
-    PRINT "Generate password"
-    CALL choose_difficulty -> level
-    CALL ask_password_length -> length
-
-    TRY:
-        CALL pg.generate_password(length, level) -> password
-        PRINT the resulting password
-    EXCEPT ValueError as error:
-        PRINT error message
-
-IN run_app:
-    IF choice == "1":
-        CALL handle_generate_password()
-    ELSE IF choice == "2":
-        CALL handle_show_saved_passwords()
-    ELSE IF choice == "3":
-        PRINT "Goodbye" and BREAK the loop
-    ELSE:
-        PRINT error message: "Invalid choice, try again"
-'''
 
 from rich.console import Console        # for colored / styled output
 from rich.panel import Panel            # for a nice box around the header

@@ -1,39 +1,18 @@
 # src/passgen/utils.py
 
-'''
-FUNCTION ask_menu_choice(prompt):
-    READ user input with the given prompt
-    STRIP whitespace
-    RETURN the string
+"""
+Utility functions for user input and validation in PassGen.
 
-FUNCTION ask_int(prompt, min_value, max_value, default=None):
-    LOOP forever:
-        READ user input with the given prompt
-        STRIP whitespace
+Responsibility:
+- Read and validate menu choices
+- Read and validate integer input within a given range
+- Ensure non-empty string input for critical fields (e.g. service, username)
 
-        IF input is empty AND default is not None:
-            RETURN default
-
-        TRY to convert input to int:
-            IF conversion fails:
-                PRINT error "invalid number"
-                CONTINUE loop
-
-        IF value is less than min_value OR greater than max_value:
-            PRINT error "must be between min and max"
-            CONTINUE loop
-
-        RETURN value
-
-FUNCTION ask_non_empty(prompt):
-    LOOP forever:
-        READ user input with the given prompt
-        STRIP whitespace
-        IF not empty:
-            RETURN value
-        ELSE:
-            PRINT error "field cannot be empty"
-'''
+Demonstrates:
+- Reusable helper functions for CLI input handling
+- Input validation to prevent crashes from invalid user input
+- Separation of low-level input logic from the main application flow
+"""
 
 
 from typing import Optional

@@ -1,22 +1,16 @@
 # src/passgen/config.py
 
-'''
-IMPORT Path from pathlib
+"""
+Configuration module for PassGen.
 
-SET BASE_DIR to the directory where this file (config.py) is located
+This module centralizes configuration, paths, and constants.
 
-SET DATA_DIR to BASE_DIR joined with "data"
+Demonstrates:
+- Proper path handling using __file__ and pathlib
+- A clear place for application-wide settings (length limits, data/report directories)
+- Automatic creation of required directories (data/, reports/)
+"""
 
-IF DATA_DIR does not exist:
-    CREATE the DATA_DIR directory
-
-SET PASSWORD_FILE to DATA_DIR joined with "passwords.json"
-LOG_FILE = DATA_DIR / "passgen_log.txt"
-
-SET DEFAULT_LENGTH to some integer (e.g. 12)
-SET MIN_LENGTH to some integer (e.g. 4)
-SET MAX_LENGTH to some integer (e.g. 64)
-'''
 
 from pathlib import Path        # path helps us work with file system paths in an OS-independent way
 

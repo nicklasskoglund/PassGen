@@ -1,5 +1,20 @@
 # src/passgen/logger.py
 
+"""
+Logging utilities for PassGen.
+
+Responsibility:
+- Append timestamped log entries to a text file (passgen_log.txt)
+- Provide small helper functions for common events (generated/saved/listed passwords)
+
+Demonstrates:
+- Simple, custom logging using text files instead of print() statements
+- Centralizing logging logic in one module
+- Using timestamps and log levels (INFO, ERROR) for basic observability
+- Keeping sensitive data (actual passwords) out of logs
+"""
+
+
 from datetime import datetime
 
 from .config import LOG_FILE

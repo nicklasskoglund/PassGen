@@ -1,46 +1,19 @@
 # src/passgen/password_generator.py
 
-'''
-IMPORT random and string
+"""
+Password generation logic for PassGen.
 
-DEFINE a class or some constants for difficulty:
-    EASY = "1"
-    MEDIUM = "2"
-    HARD = "3"
+Responsibility:
+- Define difficulty levels (easy/medium/hard)
+- Build character sets based on difficulty
+- Generate random passwords using letters, digits and special characters
 
-FUNCTION get_charset_by_difficulty(level):
-    SET lower to all lowercase letters (a-z)
-    SET upper to all uppercase letters (A-Z)
-    SET digits to all digits (0-9)
-    SET specials to a set of special characters
+Demonstrates:
+- Separation of business logic from CLI and storage concerns
+- Use of Python's `random` and `string` modules
+- Defensive programming with basic input validation and ValueError
+"""
 
-    IF level is EASY:
-        RETURN lower + upper + digits
-    ELSE IF level is MEDIUM:
-        RETURN lower + upper + digits + some specials
-    ELSE IF level is HARD:
-        RETURN lower + upper + digits + all specials
-    ELSE:
-        RAISE ValueError("Invalid difficulty level")
-'''
-'''
-FUNCTION generate_password(length, level):
-    GET charset by calling get_charset_by_difficulty(level)
-
-    IF length <= 0:
-        RAISE ValueError("Length must be greater than zero")
-
-    IF charset is empty:
-        RAISE ValueError("Character set is empty")
-
-    CREATE an empty list or string for the password
-
-    LOOP from 1 to length:
-        CHOOSE a random character from charset
-        APPEND it to the password
-
-    RETURN password as a string
-'''
 
 import random       # used to randomly choose characters for the password
 import string       # provides ready-made sets of characters (letters, digits, etc.)

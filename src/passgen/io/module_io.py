@@ -1,29 +1,18 @@
 # src/passgen/io/module_io.py
 
-'''
-IMPORT json
-IMPORT Path from pathlib
-IMPORT Any from typing
+"""
+Generic file and JSON I/O helpers for PassGen.
 
-FUNCTION read_json_file(path):
-    IF path does not exist:
-        RETURN None
-    TRY:
-        OPEN file for reading (utf-8)
-        PARSE JSON and return data
-    IF json is invalid:
-        RETURN None
+Responsibility:
+- Read JSON data safely from disk
+- Write JSON data to disk with proper encoding and indentation
+- Append lines of text to a file (used by the logging module)
 
-FUNCTION write_json_file(path, data):
-    MAKE SURE parent directory exists
-    OPEN file for writing (utf-8)
-    DUMP JSON with indentation
-
-FUNCTION append_text_line(path, line):
-    MAKE SURE parent directory exists
-    OPEN file in append mode (utf-8)
-    WRITE line + newline
-'''
+Demonstrates:
+- A dedicated I/O layer separate from business logic and CLI
+- Robust handling of missing or invalid JSON files
+- Using pathlib for file operations across platforms
+"""
 
 
 import json
