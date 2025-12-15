@@ -42,6 +42,9 @@ def read_json_file(path: Path) -> Optional[Any]:
     except json.JSONDecodeError:
         # If the content is not valid JSON, we return None instead of crashing.
         return None
+    except OSError:
+        # could not read the file (permissions, IO error, etc.)
+        return None
     
     
 def write_json_file(path: Path, data: Any) -> None:

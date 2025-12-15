@@ -142,14 +142,21 @@ def handle_generate_password() -> None:
         service = utils.ask_non_empty('Service name (e.g. Gmail, Spotify): ')
         username = utils.ask_non_empty('Username / email for this service: ')
         
-        # call the storage modul to save the new record
-        storage.add_password(service, username, password)
+        try:
+            # call the storage modul to save the new record
+            storage.add_password(service, username, password)
+        except Exception as exc:
+            logger.log_event(f"Error while saving password: {exc!r}", level="ERROR")
+            console.print("❌ Failed to save password. See log for details.", style="red")
+            console.print()
+            return
         
         # log that we saved the password (without the password itself).
         logger.log_password_saved(service=service, username=username)
         
         console.print('✅ Password saved.', style='green')
         print()
+        
     else:
         console.print('Password was not saved.', style='yellow')
         print()
@@ -203,15 +210,18 @@ def handle_show_saved_passwords() -> None:
     
 def handle_backup_passwords() -> None:
     '''
-    Handle the flow for menu option 3: create a backup of the password file.
-
-    Uses the high-level backup function from io.file_ops and logs the result.
+    Menu option 3: create a backup of the password file.
     '''
     console.print('\n--- Backup passwords file ---', style='bold cyan')
 
-    backup_path = backup_password_file()
+    try:
+        backup_path = backup_password_file()
+    except Exception as exc:
+        logger.log_event(f'Error while creating password backup: {exc!r}', level='ERROR')
+        console.print('❌ Failed to create backup. See log for details.', style='red')
+        print()
+        return
 
-    # log that the backup was created successfully
     logger.log_backup_created(str(backup_path))
 
     console.print('✅ Backup created successfully.', style='green')
@@ -221,33 +231,31 @@ def handle_backup_passwords() -> None:
 
 def handle_reset_passwords() -> None:
     '''
-    Handle the flow for menu option 4: reset the password storage file.
-
-    This is a destructive operation: all saved passwords will be removed.
-    We therefore ask the user for an explicit confirmation.
+    Menu option 4: reset the password storage file.
     '''
     console.print('\n--- Reset passwords file ---', style='bold red')
     console.print('[yellow]Warning: This will permanently delete all saved passwords from passwords.json.[/yellow]')
 
-    # ask the user to type a strong confirmation word to avoid accidents.
     console.print('Type [bold red]YES[/bold red] to confirm, or press Enter to cancel:')
-    
-    # read plain input (no markup in the prompt itself)
     confirm = utils.ask_menu_choice('> ')
 
     if confirm != 'YES':
         console.print('Reset cancelled. No data was changed.', style='yellow')
-        print()
+        console.print()
         return
 
-    # perform the reset (write an empty list to passwords.json)
-    reset_password_file()
+    try:
+        reset_password_file()
+    except Exception as exc:
+        logger.log_event(f'Error while resetting password file: {exc!r}', level='ERROR')
+        console.print('❌ Failed to reset password file. See log for details.', style='red')
+        console.print()
+        return
 
-    # log that this destructive operation happened.
     logger.log_passwords_reset()
 
-    console.print('✅ Password storage has been reset. passwords.json is now empty.', style='green',)
-    print()
+    console.print('✅ Password storage has been reset. passwords.json is now empty.', style='green')
+    console.print()
     
     
 def run_app() -> None:
