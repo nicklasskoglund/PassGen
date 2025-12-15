@@ -49,6 +49,7 @@ IN run_app:
 
 from rich.console import Console        # for colored / styled output
 from rich.panel import Panel            # for a nice box around the header
+from rich.table import Table
 
 from . import config                    # import configuration (min/max/default length, paths, etc.)
 from . import password_generator as pg  # import the password generator module
@@ -64,7 +65,10 @@ def print_header() -> None:
     '''
     Print a colorful header for the CLI application using Rich.
     '''
-    title_text = '[bold magenta]PassGen[/bold magenta]\n[cyan]Password Generator CLI[/cyan]'
+    title_text = (
+        '[bold magenta]PassGen[/bold magenta]\n'
+        '[cyan]Password Generator CLI[/cyan]'
+        )
     
     # panel creates a nice box around the text
     panel = Panel(
@@ -159,7 +163,7 @@ def handle_generate_password() -> None:
     
     # 4) show the generated password to the user.
     console.print('\nYour new password is:', style='bold green')
-    print(password)
+    console.print(f'[bold]{password}[/bold]')
     print()     # print an extra blank line for readability
     
     # 5) ask if the user wants to save the password.
@@ -176,7 +180,7 @@ def handle_generate_password() -> None:
         # log that we saved the password (without the password itself).
         logger.log_password_saved(service=service, username=username)
         
-        console.print('✅ [green]Password saved.[/green]')
+        console.print('✅ Password saved.', style='green')
         print()
     else:
         console.print('Password was not saved.', style='yellow')
@@ -196,9 +200,16 @@ def handle_show_saved_passwords() -> None:
     
     if not records:
         # if the list is empty, there are no saved passwords yet.
-        print('No passwords have been saved yet.')
+        console.print('No passwords have been saved yet.', style='yellow')
         print()
         return
+    
+    table = Table(show_header=True, header_style='bold magenta')
+    table.add_column('#', style='dim', width=4)
+    table.add_column('Service')
+    table.add_column('Username')
+    table.add_column('Password (masked)')
+    table.add_column('Created", style="cyan')
     
     # loop over saved password records and print them nicely.
     for index, record in enumerate(records, start=1):
@@ -210,13 +221,15 @@ def handle_show_saved_passwords() -> None:
         # mask the password before printing (to avoid showing full secret in CLI).
         masked = mask_password(password, visible_chars=3)
         
-        print(f'{index}. Service: {service}')
-        print(f'   Username: {username}')
-        print(f'   Password (full): {password}')
-        print(f'   Password (masked): {masked}')
-        print(f'   Created:  {created_at}')
-        print('-' * 40)
+        table.add_row(
+            str(index),
+            service,
+            username,
+            masked,
+            created_at,
+        )
         
+    print(table)
     print()     # extra blank line at the end
     
     
