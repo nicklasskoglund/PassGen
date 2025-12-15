@@ -1,55 +1,20 @@
 # src/passgen/main.py
 
-'''
-IMPORT config
-IMPORT password_generator as pg
-IMPORT storage
-IMPORT utils
+"""
+Main entry point for the PassGen CLI application.
 
-FUNCTION choose_difficulty:
-    PRINT difficulty menu (1, 2, 3)
-    LOOP:
-        READ user input as choice
-        IF choice is "1" or "2" or "3":
-            RETURN choice
-        ELSE:
-            PRINT "invalid choice" and repeat
+Demonstrates:
+- Composing functionality from multiple modules (config, storage, security, I/O, logging)
+- Creating a main application loop with a menu-driven flow
+- Clean separation between CLI/UI code and core logic modules
+- Using the Rich library for colored terminal output
+- Integrating logging and JSON storage in a user-facing application
+"""
 
-FUNCTION ask_password_length:
-    LOOP:
-        ASK user to input desired length (show min, max and default)
-        TRY to convert input to integer
-            IF conversion fails:
-                PRINT "invalid number" and continue
-        IF length is smaller than MIN_LENGTH or larger than MAX_LENGTH:
-            PRINT "must be between MIN and MAX" and continue
-        RETURN length
-
-FUNCTION handle_generate_password:
-    PRINT "Generate password"
-    CALL choose_difficulty -> level
-    CALL ask_password_length -> length
-
-    TRY:
-        CALL pg.generate_password(length, level) -> password
-        PRINT the resulting password
-    EXCEPT ValueError as error:
-        PRINT error message
-
-IN run_app:
-    IF choice == "1":
-        CALL handle_generate_password()
-    ELSE IF choice == "2":
-        CALL handle_show_saved_passwords()
-    ELSE IF choice == "3":
-        PRINT "Goodbye" and BREAK the loop
-    ELSE:
-        PRINT error message: "Invalid choice, try again"
-'''
 
 from rich.console import Console        # for colored / styled output
 from rich.panel import Panel            # for a nice box around the header
-from rich.table import Table
+from rich.table import Table            # for a nice table when showing saved passwords
 
 from . import config                    # import configuration (min/max/default length, paths, etc.)
 from . import password_generator as pg  # import the password generator module
@@ -57,6 +22,7 @@ from . import storage                   # for saving/loading passwords
 from . import utils                     # input helper functions
 from . import logger                    # logging module
 from .security import mask_password     # import security
+from .io.file_ops import backup_password_file, reset_password_file   # import backup / reset function to the menu
 
 # create a global Console instance that we can use throughout this module.
 console = Console()
@@ -87,7 +53,9 @@ def print_menu() -> None:
     console.print('\n[bold underline]Menu[/bold underline]', style='cyan')
     console.print('[green]1)[/green] Generate new password')
     console.print('[green]2)[/green] Show saved passwords')
-    console.print('[green]3)[/green] Exit')
+    console.print('[green]3)[/green] Backup passwords file')
+    console.print('[green]4)[/green] Reset passwords file')
+    console.print('[green]5)[/green] Exit')
     
 
 def choose_difficulty() -> str:
@@ -233,6 +201,55 @@ def handle_show_saved_passwords() -> None:
     print()     # extra blank line at the end
     
     
+def handle_backup_passwords() -> None:
+    """
+    Handle the flow for menu option 3: create a backup of the password file.
+
+    Uses the high-level backup function from io.file_ops and logs the result.
+    """
+    console.print('\n--- Backup passwords file ---', style='bold cyan')
+
+    backup_path = backup_password_file()
+
+    # log that the backup was created successfully
+    logger.log_backup_created(str(backup_path))
+
+    console.print('✅ Backup created successfully.', style='green')
+    console.print(f"Location: [dim]{backup_path}[/dim]")
+    print()
+    
+
+def handle_reset_passwords() -> None:
+    """
+    Handle the flow for menu option 4: reset the password storage file.
+
+    This is a destructive operation: all saved passwords will be removed.
+    We therefore ask the user for an explicit confirmation.
+    """
+    console.print('\n--- Reset passwords file ---', style='bold red')
+    console.print('[yellow]Warning: This will permanently delete all saved passwords from passwords.json.[/yellow]')
+
+    # ask the user to type a strong confirmation word to avoid accidents.
+    console.print('Type [bold red]YES[/bold red] to confirm, or press Enter to cancel:')
+    
+    # read plain input (no markup in the prompt itself)
+    confirm = utils.ask_menu_choice('> ')
+
+    if confirm != 'YES':
+        console.print('Reset cancelled. No data was changed.', style='yellow')
+        print()
+        return
+
+    # perform the reset (write an empty list to passwords.json)
+    reset_password_file()
+
+    # log that this destructive operation happened.
+    logger.log_passwords_reset()
+
+    console.print('✅ Password storage has been reset. passwords.json is now empty.', style='green',)
+    print()
+    
+    
 def run_app() -> None:
     '''
     Main application loop.
@@ -245,7 +262,7 @@ def run_app() -> None:
         print_menu()    # shows the menu options
         
         # asks the user to choose an option
-        choice = utils.ask_menu_choice('Chooce an option (1-3): ')
+        choice = utils.ask_menu_choice('Chooce an option (1-5): ')
         
         # handle the user´s choice
         if choice == '1':
@@ -255,6 +272,12 @@ def run_app() -> None:
             handle_show_saved_passwords()
             
         elif choice == '3':
+            handle_backup_passwords()
+            
+        elif choice == '4':
+            handle_reset_passwords()
+            
+        elif choice == '5':
             console.print('\nGoodbye! 👋', style='bold magenta')
             break
         

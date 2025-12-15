@@ -1,15 +1,20 @@
 # src/passgen/security.py
 
-'''
+"""
 Security module for PassGen.
 
 Demonstrates common security practices and concepts:
-- Input validation (used throughout the CLI with helper functions)
+- Input validation (used together with utilities in the CLI)
 - Safe path handling via pathlib (reduces path traversal risks)
 - Avoiding command injection (no user input is executed as shell commands)
 - Password hashing with salt using PBKDF2-HMAC-SHA256
 - Safe data handling (no plain passwords in logs, optional masking in UI)
-'''
+
+Responsibility:
+- Create salted, hashed representations of passwords for storage
+- Verify plain text passwords against stored hashes
+- Provide masking helpers to avoid showing full passwords in the CLI
+"""
 
 
 import base64

@@ -1,37 +1,20 @@
 # src/passgen/storage.py
 
-'''
-IMPORT json
-IMPORT datetime (for timestamp)
-IMPORT PASSWORD_FILE path from config
+"""
+Password storage and retrieval for PassGen.
 
-FUNCTION _load_raw():
-    IF password file does not exist:
-        RETURN empty list
-    TRY:
-        OPEN file for reading
-        PARSE json into a Python list
-        RETURN the list
-    IF json is invalid:
-        RETURN empty list
+Responsibility:
+- Read and write password records to a JSON file
+- Store both plain text passwords (for this learning project) and hashed passwords
+- Provide a simple API: add_password() and list_passwords()
 
-FUNCTION _save_raw(data_list):
-    OPEN file for writing
-    DUMP data_list as json with nice indentation
+Demonstrates:
+- Separation between data persistence and application logic
+- JSON-based storage via helper functions in the I/O layer (io.module_io)
+- Adding metadata such as timestamps to stored records
+- How to gradually introduce more secure storage (hashing) in a teaching context
+"""
 
-FUNCTION add_password(service, username, password):
-    data_list = _load_raw()
-    CREATE a record dict with:
-        "service": service
-        "username": username
-        "password": password
-        "created_at": current timestamp as ISO string
-    APPEND record to data_list
-    CALL _save_raw(data_list)
-
-FUNCTION list_passwords():
-    RETURN _load_raw()
-'''
 
 
 from datetime import datetime                               # used to store a timestamp for each password

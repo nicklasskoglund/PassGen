@@ -1,37 +1,18 @@
 # src/passgen/io/file_ops.py
 
-'''
-IMPORT datetime
-IMPORT Path
-IMPORT PASSWORD_FILE, REPORTS_DIR, LOG_FILE from config
-IMPORT read_json_file, write_json_file from module_io
+"""
+File operations module for PassGen.
 
-FUNCTION generate_timestamp(format_str="%Y%m%d_%H%M%S"):
-    RETURN current datetime formatted using format_str
+Responsibility:
+- Create timestamped backups of the password storage file (passwords.json)
+- Reset the password storage file to an empty list
+- Create timestamped backups of the main log file (passgen_log.txt)
 
-FUNCTION backup_password_file():
-    READ data from PASSWORD_FILE using read_json_file
-    IF data is None:
-        SET data to empty list
-    SET backup_dir to data directory / "backups"
-    CREATE backup_dir if needed
-    CREATE filename "passwords_<timestamp>.json"
-    WRITE data to backup file using write_json_file
-    RETURN path to backup file
-
-FUNCTION reset_password_file():
-    WRITE [] to PASSWORD_FILE using write_json_file
-
-FUNCTION backup_log_file():
-    SET backup_dir to REPORTS_DIR / "backups"
-    CREATE backup_dir if needed
-    IF LOG_FILE does not exist:
-        RETURN None
-    READ all text from LOG_FILE
-    CREATE filename "passgen_log_<timestamp>.txt"
-    WRITE text to backup file (normal open/write)
-    RETURN path to backup file
-'''
+Demonstrates:
+- Timestamp-based filenames for backup and archival
+- Using pathlib for directory management and file copying
+- Keeping backup/maintenance functionality separate from core logic
+"""
 
 
 from __future__ import annotations
