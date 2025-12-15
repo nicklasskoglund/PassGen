@@ -39,3 +39,32 @@ def _pbkdf2_sha256(password: str, salt: bytes, iterations: int) -> bytes:
     )
 
 
+def hash_password(password: str, iterations: int = 100_000) -> str:
+    '''
+    Create a salted, hashed representation of a password.
+
+    The format is:
+        pbkdf2_sha256$iterations$salt_b64$hash_b64
+
+    This is similar in spirit to how many web frameworks store password hashes.
+
+    Args:
+        password: The plain text password to hash.
+        iterations: Number of PBKDF2 iterations (default: 100_000).
+
+    Returns:
+        A single string containing algorithm, iterations, salt and hash.
+    '''
+    # generate a random 16-byte salt.
+    salt = secrets.token_bytes(16)
+    
+    # derive the key using PBKDF2-HMAC-SHA256.
+    dk = _pbkdf2_sha256(password, salt, iterations)
+    
+    # encode salt and hash to base64 so they can be stored as text.
+    salt_b64 = base64.b64encode(salt).decode('ascii')
+    hash_b64 = base64.b64encode(dk).decode('ascii')
+    
+    return f'pbkdf2_sha256${iterations}${salt_b64}${hash_b64}'
+
+
