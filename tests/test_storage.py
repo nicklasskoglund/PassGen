@@ -1,13 +1,13 @@
 # tests/test_storage.py
 
-"""
+'''
 Tests for the storage module in PassGen.
 
 Focus:
 - Using a temporary PASSWORD_FILE path per test (via monkeypatch + tmp_path)
 - Verifying that add_password() writes correct data to JSON
 - Verifying that list_passwords() returns expected records
-"""
+'''
 
 import json
 from pathlib import Path
@@ -17,21 +17,21 @@ from passgen.security import verify_password
 
 
 def _setup_temp_password_file(tmp_path, monkeypatch) -> Path:
-    """
+    '''
     Helper to redirect storage.PASSWORD_FILE to a temporary file for each test.
 
     This ensures that tests do not touch the real passwords.json file.
-    """
+    '''
     temp_file = tmp_path / 'passwords.json'
     monkeypatch.setattr(storage, 'PASSWORD_FILE', temp_file)
     return temp_file
 
 
 def test_list_passwords_empty_when_file_missing(tmp_path, monkeypatch):
-    """
+    '''
     If the password file does not exist, list_passwords() should return an empty list
     and should NOT create the file.
-    """
+    '''
     temp_file = _setup_temp_password_file(tmp_path, monkeypatch)
 
     passwords = storage.list_passwords()
@@ -41,10 +41,10 @@ def test_list_passwords_empty_when_file_missing(tmp_path, monkeypatch):
 
 
 def test_add_password_creates_file_and_record(tmp_path, monkeypatch):
-    """
+    '''
     add_password() should create the JSON file and store a single record
     with the expected fields.
-    """
+    '''
     temp_file = _setup_temp_password_file(tmp_path, monkeypatch)
 
     service = 'Gmail'
@@ -74,10 +74,10 @@ def test_add_password_creates_file_and_record(tmp_path, monkeypatch):
 
 
 def test_add_password_stores_hash_that_verifies(tmp_path, monkeypatch):
-    """
+    '''
     The stored password_hash field should be a salted PBKDF2 hash,
     and verify_password() should accept the original password.
-    """
+    '''
     temp_file = _setup_temp_password_file(tmp_path, monkeypatch)
 
     service = 'Spotify'
@@ -100,10 +100,10 @@ def test_add_password_stores_hash_that_verifies(tmp_path, monkeypatch):
 
 
 def test_list_passwords_returns_all_records(tmp_path, monkeypatch):
-    """
+    '''
     After adding multiple passwords, list_passwords() should return a list
     with the same number of records and matching service/username values.
-    """
+    '''
     _ = _setup_temp_password_file(tmp_path, monkeypatch)
 
     storage.add_password('Gmail', 'user1@example.com', 'PwdOne123!')
