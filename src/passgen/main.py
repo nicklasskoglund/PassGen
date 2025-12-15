@@ -1,6 +1,6 @@
 # src/passgen/main.py
 
-"""
+'''
 Main entry point for the PassGen CLI application.
 
 Demonstrates:
@@ -9,7 +9,7 @@ Demonstrates:
 - Clean separation between CLI/UI code and core logic modules
 - Using the Rich library for colored terminal output
 - Integrating logging and JSON storage in a user-facing application
-"""
+'''
 
 
 from rich.console import Console        # for colored / styled output
@@ -61,7 +61,7 @@ def print_menu() -> None:
 def choose_difficulty() -> str:
     '''
     Ask the user to choose a difficulty level for the password.
-    Returns one of: "1", "2", "3".
+    Returns one of: '1', '2', '3'.
     '''
     console.print('\n[bold underline]Choose difficulty level:[/bold underline]', style='cyan')
     console.print('[green]1)[/green] Easy      (letters + digits)')
@@ -123,7 +123,7 @@ def handle_generate_password() -> None:
         # we show an error message instead of crashing.
         console.print(f'❌ [red]Error while generating password:[/red] {error}')
         # log the error
-        logger.log_event(f'Error generating password: {error}", level="ERROR')
+        logger.log_event(f'Error generating password: {error}', level='ERROR')
         return
     
     # log that a password was generated (without storing the actual password).
@@ -177,7 +177,7 @@ def handle_show_saved_passwords() -> None:
     table.add_column('Service')
     table.add_column('Username')
     table.add_column('Password (masked)')
-    table.add_column('Created", style="cyan')
+    table.add_column('Created', style='cyan')
     
     # loop over saved password records and print them nicely.
     for index, record in enumerate(records, start=1):
@@ -202,11 +202,11 @@ def handle_show_saved_passwords() -> None:
     
     
 def handle_backup_passwords() -> None:
-    """
+    '''
     Handle the flow for menu option 3: create a backup of the password file.
 
     Uses the high-level backup function from io.file_ops and logs the result.
-    """
+    '''
     console.print('\n--- Backup passwords file ---', style='bold cyan')
 
     backup_path = backup_password_file()
@@ -215,17 +215,17 @@ def handle_backup_passwords() -> None:
     logger.log_backup_created(str(backup_path))
 
     console.print('✅ Backup created successfully.', style='green')
-    console.print(f"Location: [dim]{backup_path}[/dim]")
+    console.print(f'Location: [dim]{backup_path}[/dim]')
     print()
     
 
 def handle_reset_passwords() -> None:
-    """
+    '''
     Handle the flow for menu option 4: reset the password storage file.
 
     This is a destructive operation: all saved passwords will be removed.
     We therefore ask the user for an explicit confirmation.
-    """
+    '''
     console.print('\n--- Reset passwords file ---', style='bold red')
     console.print('[yellow]Warning: This will permanently delete all saved passwords from passwords.json.[/yellow]')
 
