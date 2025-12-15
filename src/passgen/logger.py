@@ -42,8 +42,8 @@ def log_event(message: str, level: str = 'INFO') -> None:
         level:   Log level (e.g. "INFO", "WARNING", "ERROR").
     """
     timestamp = _current_timestamp()
-    line = f'{timestamp} [{level}] {message}\n'
-    
+    line = f'{timestamp} [{level}] {message}'
+
     # append_text_line adds a newline if needed and ensures the directory exists.
     append_text_line(LOG_FILE, line)
         
