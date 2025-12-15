@@ -123,3 +123,26 @@ def verify_password(password: str, stored_hash: str) -> bool:
     return hmac.compare_digest(candidate_hash, expected_hash)
 
 
+def mask_password(password: str, visible_chars: int = 3) -> str:
+    '''
+    Mask a password when displaying it in the CLI.
+
+    Example:
+        password="SuperSecret123", visible_chars=3 -> "Sup************"
+
+    Args:
+        password: The plain text password.
+        visible_chars: Number of characters to show at the beginning.
+
+    Returns:
+        A masked password string.
+    '''
+    if not password:
+        return ''
+    
+    if len(password) <= visible_chars:
+        return '*' * len(password)
+    
+    visible_part = password[:visible_chars]
+    masked_part = '*' * (len(password) - visible_chars)
+    return visible_part + masked_part
