@@ -1,3 +1,4 @@
+<a id="readme-top"></a>
 # 🔐 PassGen – Password Generator CLI
 
 
@@ -103,11 +104,21 @@ python -m passgen
 - 📂 View saved passwords
   - List all stored passwords directly in the CLI
   - Shows service, username, password and timestamp
-- 🧾 Logging
-  - Application events (e.g. password generated/saved, list viewed) are logged to ```reports/passgen_log.txt```
-  - Logs include timestamp and basic metadata (but not the actual passwords)
+- 🧾 Security & logging
+  - ```security.py```
+    - Password hashing with salt using PBKDF2-HMAC-SHA256
+    - Masking helper to hide parts of the password when displaying it in the CLI
+  - ```logging.py```
+    - Logs important events to ```reports/passgen_log.txt```
+    - Log entries include timestamp, log level and metadata (never the full password)
+  - Path handling is done with ```pathlib``` for safer file paths.
+  - Input validation is handled by helper functions in ```utils.py```.
 - 🎨 Colored CLI output
   - Uses the rich library to provide a clearer and more user-friendly interface (colored headers, menu, and messages)
+
+### Note: This is a teaching project.
+Passwords are still stored in plain text in the JSON file, even though a secure hash is also stored.
+Do not use this application to store real, sensitive passwords.
 
   ---
   <p align="right">(<a href="#readme-top">back to top</a>)</p>
