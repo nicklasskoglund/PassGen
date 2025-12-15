@@ -99,3 +99,27 @@ def _parse_stored_hash(stored: str) -> Tuple[int, bytes, bytes]:
     return iterations, salt, stored_hash
 
 
+def verify_password(password: str, stored_hash: str) -> bool:
+    '''
+    Verify a plain text password against a stored PBKDF2 hash.
+
+    Args:
+        password: The plain text password to verify.
+        stored_hash: The stored hash string.
+
+    Returns:
+        True if the password matches the hash, False otherwise.
+    '''
+    try:
+        iterations, salt, expected_hash = _parse_stored_hash(stored_hash)
+    except ValueError:
+        # if the stored format is invalid, we treat it as non-matching.
+        return False
+    
+    # derive a new hash using the same parameters.
+    candidate_hash = _pbkdf2_sha256(password, salt, iterations)
+    
+    # use hmac.compare_digest to avoid timing attacks.
+    return hmac.compare_digest(candidate_hash, expected_hash)
+
+
