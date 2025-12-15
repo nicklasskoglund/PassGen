@@ -14,7 +14,7 @@ Demonstrates:
 
 from rich.console import Console        # for colored / styled output
 from rich.panel import Panel            # for a nice box around the header
-from rich.table import Table
+from rich.table import Table            # for a nice table when showing saved passwords
 
 from . import config                    # import configuration (min/max/default length, paths, etc.)
 from . import password_generator as pg  # import the password generator module
@@ -22,6 +22,7 @@ from . import storage                   # for saving/loading passwords
 from . import utils                     # input helper functions
 from . import logger                    # logging module
 from .security import mask_password     # import security
+from .io.file_ops import backup_password_file, reset_password_file   # import backup / reset function to the menu
 
 # create a global Console instance that we can use throughout this module.
 console = Console()
@@ -52,7 +53,9 @@ def print_menu() -> None:
     console.print('\n[bold underline]Menu[/bold underline]', style='cyan')
     console.print('[green]1)[/green] Generate new password')
     console.print('[green]2)[/green] Show saved passwords')
-    console.print('[green]3)[/green] Exit')
+    console.print('[green]3)[/green] Backup passwords file')
+    console.print('[green]4)[/green] Reset passwords file')
+    console.print('[green]5)[/green] Exit')
     
 
 def choose_difficulty() -> str:
@@ -198,6 +201,55 @@ def handle_show_saved_passwords() -> None:
     print()     # extra blank line at the end
     
     
+def handle_backup_passwords() -> None:
+    """
+    Handle the flow for menu option 3: create a backup of the password file.
+
+    Uses the high-level backup function from io.file_ops and logs the result.
+    """
+    console.print('\n--- Backup passwords file ---', style='bold cyan')
+
+    backup_path = backup_password_file()
+
+    # log that the backup was created successfully
+    logger.log_backup_created(str(backup_path))
+
+    console.print('✅ Backup created successfully.', style='green')
+    console.print(f"Location: [dim]{backup_path}[/dim]")
+    print()
+    
+
+def handle_reset_passwords() -> None:
+    """
+    Handle the flow for menu option 4: reset the password storage file.
+
+    This is a destructive operation: all saved passwords will be removed.
+    We therefore ask the user for an explicit confirmation.
+    """
+    console.print('\n--- Reset passwords file ---', style='bold red')
+    console.print('[yellow]Warning: This will permanently delete all saved passwords from passwords.json.[/yellow]')
+
+    # ask the user to type a strong confirmation word to avoid accidents.
+    console.print('Type [bold red]YES[/bold red] to confirm, or press Enter to cancel:')
+    
+    # read plain input (no markup in the prompt itself)
+    confirm = utils.ask_menu_choice('> ')
+
+    if confirm != 'YES':
+        console.print('Reset cancelled. No data was changed.', style='yellow')
+        print()
+        return
+
+    # perform the reset (write an empty list to passwords.json)
+    reset_password_file()
+
+    # log that this destructive operation happened.
+    logger.log_passwords_reset()
+
+    console.print('✅ Password storage has been reset. passwords.json is now empty.', style='green',)
+    print()
+    
+    
 def run_app() -> None:
     '''
     Main application loop.
@@ -210,7 +262,7 @@ def run_app() -> None:
         print_menu()    # shows the menu options
         
         # asks the user to choose an option
-        choice = utils.ask_menu_choice('Chooce an option (1-3): ')
+        choice = utils.ask_menu_choice('Chooce an option (1-5): ')
         
         # handle the user´s choice
         if choice == '1':
@@ -220,6 +272,12 @@ def run_app() -> None:
             handle_show_saved_passwords()
             
         elif choice == '3':
+            handle_backup_passwords()
+            
+        elif choice == '4':
+            handle_reset_passwords()
+            
+        elif choice == '5':
             console.print('\nGoodbye! 👋', style='bold magenta')
             break
         
