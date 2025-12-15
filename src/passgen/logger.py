@@ -79,3 +79,24 @@ def log_passwords_listed(count: int) -> None:
     """
     message = f'Listed saved passwords count={count}'
     log_event(message, level='INFO')
+    
+
+def log_backup_created(backup_path: str) -> None:
+    """
+    Log that a backup of the password file was created.
+
+    Args:
+        backup_path: The filesystem path to the created backup file.
+    """
+    message = f'Password backup created at {backup_path}'
+    log_event(message, level='BACKUP')
+    
+    
+def log_passwords_reset() -> None:
+    """
+    Log that the password storage file was reset/cleared.
+
+    This is a destructive operation, so we log it as WARNING.
+    """
+    message = 'Password storage reset to empty list'
+    log_event(message, level='WARNING')
