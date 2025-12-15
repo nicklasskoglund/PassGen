@@ -68,3 +68,34 @@ def hash_password(password: str, iterations: int = 100_000) -> str:
     return f'pbkdf2_sha256${iterations}${salt_b64}${hash_b64}'
 
 
+def _parse_stored_hash(stored: str) -> Tuple[int, bytes, bytes]:
+    '''
+    Parse a stored hash string into its components.
+
+    Expected format:
+        pbkdf2_sha256$iterations$salt_b64$hash_b64
+
+    Args:
+        stored: The stored hash string.
+
+    Returns:
+        Tuple of (iterations, salt_bytes, hash_bytes).
+
+    Raises:
+        ValueError: If the format is invalid.
+    '''
+    try:
+        algorithm, iter_str, salt_b64, hash_b64 = stored.split('$', 3)
+    except ValueError as exc:
+        raise ValueError('Invalid stored hash format.') from exc
+    
+    if algorithm != 'pbkdf2_sha256':
+        raise ValueError(f'Unsupported algorithm: {algorithm}')
+    
+    iterations = int(iter_str)
+    salt = base64.b64decode(salt_b64)
+    stored_hash = base64.b64decode(hash_b64)
+    
+    return iterations, salt, stored_hash
+
+
