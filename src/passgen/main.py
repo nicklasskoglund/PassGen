@@ -204,15 +204,17 @@ def handle_backup_passwords() -> None:
     """
     Handle the flow for menu option 3: create a backup of the password file.
 
-    Uses the high-level backup function from io.file_ops.
+    Uses the high-level backup function from io.file_ops and logs the result.
     """
     console.print('\n--- Backup passwords file ---', style='bold cyan')
-    
-    # create a backup of the current passwords.json file.
+
     backup_path = backup_password_file()
-    
+
+    # Log that the backup was created successfully
+    logger.log_backup_created(str(backup_path))
+
     console.print('✅ Backup created successfully.', style='green')
-    console.print(f'Location: [dim]{backup_path}[/dim]')
+    console.print(f"Location: [dim]{backup_path}[/dim]")
     print()
     
     
