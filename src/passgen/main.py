@@ -229,7 +229,7 @@ def handle_show_saved_passwords() -> None:
             created_at,
         )
         
-    print(table)
+    console.print(table)
     print()     # extra blank line at the end
     
     
