@@ -34,11 +34,12 @@ FUNCTION list_passwords():
 '''
 
 
-from datetime import datetime       # used to store a timestamp for each password
-from typing import List, Dict, Any  # type hints for better readability
+from datetime import datetime                               # used to store a timestamp for each password
+from typing import List, Dict, Any                          # type hints for better readability
 
-from .config import PASSWORD_FILE   # import the path to our JSON file
+from .config import PASSWORD_FILE                           # import the path to our JSON file
 from .io.module_io import read_json_file, write_json_file   # import read/writ JSON
+from .security import hash_password                         # import security
 
 
 def _load_raw() -> List[Dict[str, Any]]:
@@ -71,18 +72,25 @@ def _save_raw(data: List[Dict[str, Any]]) -> None:
 
 def add_password(service: str, username: str, password: str) -> None:
     '''
-    Add a new password to the JSON file.
-    
-    :param service: The name of the service (e.g. "Gmail", "Spotify").
-    :param username: The username or email used for that service.
-    :param password: The generated password.
+    Add a new password record to the JSON file.
+
+    We store both:
+    - the plain text password (for this learning project / CLI display)
+    - a hashed version of the password (to demonstrate secure storage)
+
+    In a real-world application, you would normally NOT store the plain text
+    password at all, only the hash, or use proper encryption.
     '''
     data = _load_raw()
+    
+    # create a salted hash of the password for improved security.
+    password_hash = hash_password(password)
     
     record: Dict[str, Any] = {
         'service': service,
         'username': username,
-        'password': password,
+        'password': password,           # plain text
+        'password_hash': password_hash, # secure hash (for demonstration)
         # store a timestamp when the password was created
         'created_at': datetime.now().isoformat(timespec='seconds'),
     }

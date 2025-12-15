@@ -55,6 +55,7 @@ from . import password_generator as pg  # import the password generator module
 from . import storage                   # for saving/loading passwords
 from . import utils                     # input helper functions
 from . import logger                    # logging module
+from .security import mask_password     # import security
 
 # create a global Console instance that we can use throughout this module.
 console = Console()
@@ -206,9 +207,13 @@ def handle_show_saved_passwords() -> None:
         password = record.get('password', '-')
         created_at = record.get('created_at', '-')
         
+        # mask the password before printing (to avoid showing full secret in CLI).
+        masked = mask_password(password, visible_chars=3)
+        
         print(f'{index}. Service: {service}')
         print(f'   Username: {username}')
-        print(f'   Password: {password}')
+        print(f'   Password (full): {password}')
+        print(f'   Password (masked): {masked}')
         print(f'   Created:  {created_at}')
         print('-' * 40)
         
